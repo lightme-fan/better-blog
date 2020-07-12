@@ -5,15 +5,19 @@ const postList = document.getElementById('post-list');
 const submitButton = document.querySelector('.btn-primary');
 const deleteButton = document.querySelector('.btn-delete');
 const heading = document.querySelector('#postTitle');
-const postContent = document.getElementsByName('postContent');
-const image = document.getElementsByName('postImg');
+const postContent = document.querySelector('textarea');
+const image = document.querySelector(`[name= "postImg"]`);
 const hideForm = document.querySelector('#show-form');
 const postForm = document.querySelector('form');
 const errorMessage = document.querySelector('#error-message');
-const author = document.getElementsByName('posrAuthor');
+const author = document.querySelector(`[name= 'postAuthor']`);
 
-const post = (e) => {
-    // $event.preventDefault();
+
+    
+
+    
+submitButton.addEventListener('click', ($event) => {
+    $event.preventDefault();
 
     // New div for the card
     const newCard = document.createElement('div');
@@ -32,22 +36,10 @@ const post = (e) => {
     // New heading
     const newHeading = document.createElement('h5');
     newHeading.classList.add('card-title');
-    if (!newHeading.value) {
-        heading.style.border = 'thin solid red'
-    } else {
-        heading.style.border = 'thin solid blue'
-    }
-
+    
     // New content 
     const newText = document.createElement('p');
     newText.classList.add('card-text');
-    if (postContent.value < 20) {
-        postContent.style.border = 'thin solid red';
-        postContent.classList.add('is-invalid');
-        errorMessage.classList.remove('hidden');
-    } else {
-        errorMessage.classList.add('hidden');
-    }
 
     // Adding button element
     const deleteElement = document.createElement('button');
@@ -69,11 +61,10 @@ const post = (e) => {
     // Appending the element to be inside of the post list
     newCardBody.appendChild(newHeading);
     newCardBody.appendChild(newText);
-    newCardBody.appendChild(deleteElement);
     newCardBody.appendChild(newAuthor);
+    newCardBody.appendChild(deleteElement);
     newCard.appendChild(newImage);
     newCard.appendChild(newCardBody);
-    // newCard.appendChild(dateToday);
     postList.appendChild(newCard);
     console.log(postList);
 
@@ -82,10 +73,22 @@ const post = (e) => {
     newImage.textContent = `${image.value}`;
     newAuthor.textContent = `${author.value}`;
 
-    // postForm.reset();
-}
+    postForm.reset();
 
-submitButton.addEventListener('click', post);
+})
+    
+    
+submitButton.addEventListener('click', ($event) => {   
+    if (postContent.value.length < 20) {
+        const feedack = document.createElement('div');
+        feedack.classList.add('invalid-feedBack')
+        feedack.textContent = 'invalid feedback';
+        errorMessage.classList.remove('hidden');
+    } else {
+        postContent.classList.remove('is-invalid');
+        errorMessage.classList.add('hidden');
+    }
+}); 
 
 
 //Hiding the form field
